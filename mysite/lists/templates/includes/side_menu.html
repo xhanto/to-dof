@@ -1,0 +1,31 @@
+{% load lists_extra %}
+<h3>Mes listes</h3>
+{% if user.is_authenticated %}
+  {% if myLists %}
+    <ul>
+
+      {% for list in myLists %}
+        <li><a href="{% url 'lists:detail' list.id %}">{{ list.list_name }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>Aucune liste disponible.</p>
+  {% endif %}
+{% else %}
+  <p><a href="{% url 'lists:login'%}">Inscription requise</a></p>
+{% endif %}
+<h3>Sur mon serveur</h3>
+{% if user.is_authenticated %}
+
+{% if serverList %}
+<ul>
+  {% for l in serverList %}
+  <li><a href="{% url 'lists:detail' l.id %}">{{ l.list_name }},  /w {{l.user|get_mp}}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Aucun serveur spécifié / Aucune liste pour ce serveur</p>
+{% endif %}
+{% else %}
+  <p><a href="{% url 'lists:login'%}">Inscription requise</a></p>
+{% endif %}

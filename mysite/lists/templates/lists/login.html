@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}" />
+  </head>
+  <body>
+
+    {% include "includes/navbar.html" %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-md-3">
+          {% include "includes/side_menu.html" %}
+        </div>
+        <div class="col-xs-6 col-md-9">
+          <h1>Connexion à To-Dofus</h1>
+          {% if error %}
+            <p style="color:red"> Erreur dans le nom d'utilisateur ou le mot de passe </p>
+          {% elif not active %}
+            <p style="color:red"> Compte non-actif </p>
+          {% else %}
+            <br></br>
+          {% endif %}
+          <form id="login_form" method="post" action="/lists/login/">
+            {% csrf_token %}
+            Nom d'utilisateur: <input type="text" name="username" value="" size="50" />
+            <br></br>
+            Mot de passe : <input type="password" name="password" value="" size="50" />
+            <br></br>
+
+         <input type="submit" value="Log in" />
+     </form>
+
+        </div>
+    </div>
+  </div>
+
+  </body>
+
+</html>

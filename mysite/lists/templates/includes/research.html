@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<br></br>
+<h4>Recherche</h4>
+
+      <div class="input-group">
+          <input type="text" class="form-control" placeholder="Recherche..." id="query" name="query" value="">
+           <div class="input-group-btn">
+          <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+          </div>
+      </div>
+  
+<h4>Equipements</h4>
+<ul class="list-group row">
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Chapeau' '1' '200' %}"><img src="{% static "lists/images/coiffe.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Cape' '1' '200' %}"><img src="{% static "lists/images/cape.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Amulette' '1' '200' %}"><img src="{% static "lists/images/amulette.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Anneau' '1' '200' %}"><img src="{% static "lists/images/anneau.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Ceinture' '1' '200' %}"><img src="{% static "lists/images/ceinture.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Bottes' '1' '200' %}"><img src="{% static "lists/images/bottes.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Idole' '1' '200' %}"><img src="{% static "lists/images/idole.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Trophee' '1' '200' %}"><img src="{% static "lists/images/trophee.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Dague' '1' '200' %}"><img src="{% static "lists/images/dague.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Epee' '1' '200' %}"><img src="{% static "lists/images/epee.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Marteau' '1' '200' %}"><img src="{% static "lists/images/marteau.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Pelle' '1' '200' %}"><img src="{% static "lists/images/pelle.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Hache' '1' '200' %}"><img src="{% static "lists/images/hache.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Bouclier' '1' '200' %}"><img src="{% static "lists/images/bouclier.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Baguette' '1' '200' %}"><img src="{% static "lists/images/baguette.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Baton' '1' '200' %}"><img src="{% static "lists/images/baton.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Arc' '1' '200' %}"><img src="{% static "lists/images/arc.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Autres' '1' '200' %}"><img src="{% static "lists/images/autres.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Sac' '1' '200' %}"><img src="{% static "lists/images/sac.png" %}" width="100%" alt="" /></a></li>
+  <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Consommable' '1' '200' %}"><img src="{% static "lists/images/conso.png" %}" width="100%" alt="" /></a></li>
+</ul>

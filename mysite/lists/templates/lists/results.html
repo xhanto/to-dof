@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  </head>
+  <body>
+    <div>
+      <h1>{{ question.question_text }}</h1>
+    </div>
+
+    <div>
+      <ul>
+      {% for choice in question.choice_set.all %}
+          <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+      {% endfor %}
+      </ul>
+
+      <a href="{% url 'lists:detail' question.id %}">Vote again?</a>
+    </div>
+
+
+  </body>
+
+</html>

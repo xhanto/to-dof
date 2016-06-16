@@ -1,0 +1,75 @@
+{% load staticfiles %}
+{% load lists_extra %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+  {% include "includes/navbar.html" %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-3">
+        {% sidebar user %}
+      </div>
+      <div class="col-xs-12 col-md-7">
+        {% if newlist %}
+        <!-- The Modal -->
+        <div id="myModal" class="modal" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" id="closeX" class="close">&times;</button>
+                <h4 class="modal-title">Ajouter une nouvelle liste</h4>
+              </div>
+              <div class="modal-body">
+                <p>{% include "includes/new_list.html" %}</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+    {% endif %}
+
+    {% if type %}
+      {% itemlist type ran %}
+    {% else %}
+    <h3>Bienvenue sur la page d'accueil</h3>
+    <p>Diverses options seront affichées ici.</p>
+
+    {% endif %}
+  </div>
+  <div class="col-xs-6 col-md-2">
+    {% include "includes/research.html" %}
+  </div>
+</div>
+
+
+
+<script>
+
+var modal = document.getElementById('myModal');
+
+var cross = document.getElementById("closeX");
+cross.onclick = function() {
+  window.location = "{% url 'lists:index' %}"
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    window.location = "{% url 'lists:index' %}"
+  }
+}
+</script>
+
+</body>
+
+</html>
