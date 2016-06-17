@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404,render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
@@ -109,8 +108,19 @@ def create_list(request):
             print list_form.errors
     else:
         list_form = NewListForm()
+    dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed}
+    url =  request.META['HTTP_REFERER']
+    p = url.split("lists")
 
-    return render(request,'lists/index.html',{'newlist': True, 'list_form': list_form,'completed':completed},context)
+    if "details" in p[1]:
+        p = p[1].split("/")
+        if "page" in p[4]:
+            n = p[4].split('=')[1]
+        else:
+            n = 1
+        add_dict = {'type': p[2], 'ran': [p[3],p[4].split("?")[0]],'page': n}
+        dict_ret.update(add_dict)
+    return render(request,'lists/index.html',dict_ret,context)
 
 def item_view(request,type,ran1,ran2):
     context = RequestContext(request)

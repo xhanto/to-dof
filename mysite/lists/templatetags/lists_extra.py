@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import template
 from lists.models import List,UserProfile,User,Ressource,Arme,Equipement
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 import ast
 import re
@@ -14,26 +15,43 @@ register = template.Library()
 def sidebar(context,user):
     if user.is_authenticated():
         serv = UserProfile.objects.filter(user__exact=user)
-
+        serverList = []
         myList = List.objects.filter(user__exact=user,pub_date__lte=timezone.now()).order_by('-pub_date')
-        serverList = List.objects.filter(server__exact=serv[0].server).order_by('-pub_date')
+        if serv:
+            serverList = List.objects.filter(server__exact=serv[0].server).order_by('-pub_date')
+
         return {'myLists': myList,'serverList':serverList,'user':user}
 
 
 @register.inclusion_tag('includes/item_list.html',takes_context=True)
-def itemlist(context,type,ran):
+def itemlist(context,type,ran,p,user,request):
     armes = ['Hache','Bâton','Arc','Épée','Dague','Baguette','Pelle','Marteau']
     equipements = ['Bouclier','Anneau','Amulette','Cape','Bottes','Chapeau','Ceinture','Trophée','Sac à dos']
     ressources = ['Idole']
 
     if type in armes:
-        return {'list': Arme.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level'), 'type': type,'ran': ran}
+        items_list = Arme.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
     elif type in equipements:
-        return {'list': Equipement.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level'), 'type': type, 'ran': ran}
+        items_list = Equipement.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
     elif type in ressources:
-        return {'list' : Ressource.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level'), 'type': type, 'ran': ran}
-    else:
+        items_list = Ressource.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
         return 0
+    paginator = Paginator(items_list,50)
+    page = request.GET.get('page')
+
+    if "newlist" in str(context):
+        if context["newlist"]:
+            page = p
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+
+    return {'list': items,'type': type, 'ran': ran,'user': user}
 @register.filter(name='parse')
 def parse(value,type):
     jsonDec = json.decoder.JSONDecoder()
@@ -96,3 +114,10 @@ def title(value):
 def get_mp(value):
     profile = UserProfile.objects.filter(user__exact=value)
     return profile[0].mp
+
+
+@register.inclusion_tag('includes/add_button.html',takes_context=True)
+def add_button(context,user):
+    if user.is_authenticated():
+        myList = List.objects.filter(user__exact=user,pub_date__lte=timezone.now()).order_by('-pub_date')
+        return {'myLists': myList,'user':user}

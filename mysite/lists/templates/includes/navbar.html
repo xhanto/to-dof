@@ -9,10 +9,10 @@
 
       {% if user.is_authenticated %}
         <li><a><span class="glyphicon glyphicon-user"></span>  {{ user.username }} </a></li>
-        <li><a href="{% url 'lists:logout' %}"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+        <li><a href="{% url 'lists:logout' %}"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout</a></li>
       {% else %}
-        <li><a href="{% url 'lists:login' %}"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+        <li><a href="{% url 'lists:login' %}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
       {% endif %}
-      <li><a href="{% url 'lists:register' %}"><span class="glyphicon glyphicon-edit"></span>  Sign Up</a></li>
+      <li><a href="{% url 'lists:register' %}"><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Inscription&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
     </ul>
 </nav>

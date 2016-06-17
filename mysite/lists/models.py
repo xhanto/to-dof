@@ -23,7 +23,6 @@ class List(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     public = models.BooleanField(default=True)
-    list_item = models.CharField(max_length=200)
     list_display = ('list_name', 'user')
     def __unicode__(self):
         return self.list_name
@@ -31,8 +30,22 @@ class List(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
-class Ressource(models.Model):
+class Objet(models.Model):
     ID = models.PositiveIntegerField(primary_key=True)
+    table = models.CharField(max_length=20)
+    list_display = ('ID')
+    def __unicode__(self):
+        return str(self.ID)
+
+class ListItem(models.Model):
+    ID = models.ForeignKey(List)
+    itemID = models.ForeignKey(Objet)
+    list_display = ('ID')
+    def __unicode__(self):
+            return str(self.ID)
+
+class Ressource(models.Model):
+    ID = models.ForeignKey(Objet,default=0)
     name = models.CharField(max_length=100)
     level = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=50)
@@ -64,7 +77,7 @@ class Ressource(models.Model):
         return json.loads(self.recipe)
 
 class Arme(models.Model):
-    ID = models.PositiveIntegerField(primary_key=True)
+    ID = models.ForeignKey(Objet,default=0)
     name = models.CharField(max_length=100)
     level = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=50)
@@ -98,7 +111,7 @@ class Arme(models.Model):
         return json.loads(self.recipe)
 
 class Equipement(models.Model):
-    ID = models.PositiveIntegerField(primary_key=True)
+    ID = models.ForeignKey(Objet,default=0)
     name = models.CharField(max_length=100)
     level = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=50)
@@ -132,7 +145,7 @@ class Equipement(models.Model):
         return json.loads(self.recipe)
 
 class Consommable(models.Model):
-    ID = models.PositiveIntegerField(primary_key=True)
+    ID = models.ForeignKey(Objet,default=0)
     name = models.CharField(max_length=100)
     level = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=50)

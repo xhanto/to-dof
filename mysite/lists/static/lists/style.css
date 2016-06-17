@@ -68,3 +68,10 @@
 nav {
   z-index: 10;
 }
+
+span.glyphicon-search {
+    font-size: 1.4em;
+}
+.btn-search {
+  margin-left: -4px;
+}

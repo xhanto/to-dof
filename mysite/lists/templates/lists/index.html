@@ -14,7 +14,7 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-12 col-md-3">
+      <div class="col-xs-12 col-md-2">
         {% sidebar user %}
       </div>
       <div class="col-xs-12 col-md-7">
@@ -40,13 +40,14 @@
     {% endif %}
 
     {% if type %}
-      {% itemlist type ran %}
+      {% itemlist type ran page user request %}
     {% else %}
     <h3>Bienvenue sur la page d'accueil</h3>
     <p>Diverses options seront affichées ici.</p>
 
     {% endif %}
   </div>
+    <div class="col-md-1"></div>
   <div class="col-xs-6 col-md-2">
     {% include "includes/research.html" %}
   </div>
@@ -57,15 +58,48 @@
 <script>
 
 var modal = document.getElementById('myModal');
-
 var cross = document.getElementById("closeX");
 cross.onclick = function() {
-  window.location = "{% url 'lists:index' %}"
+    var url = "{% url 'lists:index' %}"
+    var t,ran,p = null;
+
+    var page = 1;
+    if("{{type}}")
+      t = "{{type}}"
+    if("{{ran}}")
+      ran = "{{ran}}".split("&#39;")
+    if("{{page}}")
+      page = "{{page}}"
+    if(t != null && ran != null) {
+      url = "{% url 'lists:details' 'Type' 1 200 %}"
+      url = url.replace("Type",t)
+      url = url.replace(1,ran[1]);
+      url = url.replace(200,ran[3]);
+      url = url +"?page="+page
+    }
+    window.location = url
 }
 
 window.onclick = function(event) {
   if (event.target == modal) {
-    window.location = "{% url 'lists:index' %}"
+    var url = "{% url 'lists:index' %}"
+    var t,ran,p = null;
+
+    var page = 1;
+    if("{{type}}")
+      t = "{{type}}"
+    if("{{ran}}")
+      ran = "{{ran}}".split("&#39;")
+    if("{{page}}")
+      page = "{{page}}"
+    if(t != null && ran != null) {
+      url = "{% url 'lists:details' 'Type' 1 200 %}"
+      url = url.replace("Type",t)
+      url = url.replace(1,ran[1]);
+      url = url.replace(200,ran[3]);
+      url = url +"?page="+page
+    }
+    window.location = url
   }
 }
 </script>

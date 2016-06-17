@@ -1,0 +1,18 @@
+{% load lists_extra %}
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-plus-sign" style="color:#00cc00"></span></button>
+    <ul class="dropdown-menu">
+      <li class="dropdown-header">Ajouter à</li>
+      {% if user.is_authenticated %}
+        {% if myLists %}
+          <ul>
+            {% for list in myLists %}
+              <li><a href="{% url 'lists:detail' list.id %}">{{ list.list_name }}</a></li>
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+      <li class="divider"></li>
+      <li><a  data-toggle="myModal" href="{% url 'lists:newlist' %}">Nouvelle liste</a></li>
+    </ul>
+  </div>
