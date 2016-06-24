@@ -65,7 +65,7 @@ def recover(filename):
     df_rec = pd.read_pickle(filename + "_data2.pickle")
     return len(df_rec)
 
-files = ["equipements","armes","consommables"]
+files = ["ressources"]
 #files = ["ressources"]
 base = "http://www.dofus.com"
 
@@ -91,13 +91,16 @@ for f in files:
     else:
          start = 0
 
+    start = 2358
+
     data = []
     for item in itemlist:
         #progression
         print item.encode("utf-8")
         i=i+1
+
         if i < start+1:
-            if i%(count/10) == 0:
+            if i%(count/20) == 0:
                 j = j+1
             continue
         try:
@@ -152,6 +155,7 @@ for f in files:
                 dft.to_pickle(f+"_data_rec" + str(j) + ".pickle")
             else:
                 dft.to_pickle(f+"_data" + str(j) + ".pickle")
+                print "pickle "+ str(j) + " saved, i = " + str(i)
             data = []
             del dft
             gc.collect()
