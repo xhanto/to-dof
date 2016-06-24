@@ -3,7 +3,7 @@ import pickle
 from math import ceil
 from BeautifulSoup import BeautifulSoup
 
-#pages = ["equipements","consommables","idoles","armes"]
+#pages = ["equipements","armes","consommables"]
 pages = ["ressources"]
 def count_pages(page):
     url = 'http://www.dofus.com/fr/mmorpg/encyclopedie/' + page
@@ -14,7 +14,10 @@ def count_pages(page):
 
 
 def get_page(url):
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except:
+        r = requests.get(url)
     while(r.status_code != requests.codes.ok):
         r = requests.get(url)
     soup = BeautifulSoup(r.content)
@@ -31,14 +34,14 @@ def extract_links(url):
             links.append(ref.get("href"))
     return links
 
+for r in range(9):
+    for p in pages:
+        links = []
+        n_pages = count_pages(p)
 
-for p in pages:
-    links = []
-    n_pages = count_pages(p)
-
-    for i in range(n_pages):
-        url = 'http://www.dofus.com/fr/mmorpg/encyclopedie/'+p+'?size=96&page=%d' % (i+1)
-        ret = extract_links(url)
-        links.extend(ret)
-    print len(links)
-    pickle.dump(links,open(p+".pickle", "wb"))
+        for i in range(n_pages):
+            url = 'http://www.dofus.com/fr/mmorpg/encyclopedie/'+p+'?size=96&page=%d' % (i+1)
+            ret = extract_links(url)
+            links.extend(ret)
+        print len(links)
+        pickle.dump(links,open(p+str(r)+".pickle", "wb"))

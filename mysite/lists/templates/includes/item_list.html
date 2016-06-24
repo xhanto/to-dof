@@ -83,7 +83,9 @@
       <div class="col-md-3" align="right">Niveau: {{l.level}}</div>
 
       <div class="col-md-1" align="right">
-        {% add_button user %}
+{% if user.is_authenticated %}
+        {% add_button user l %}
+        {% endif %}
         </div>
       </div>
     </li>

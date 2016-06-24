@@ -1,0 +1,176 @@
+{% load lists_extra %}
+<h2>{{ type|title }}</h2>
+<ul class="nav nav-pills">
+  {% if ran.0 == '1 and ran.1 == 50' %}
+
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li class="active"><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li ><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+
+  {% elif ran.0 == '51' and ran.1 == '100' %}
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li class="active"><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li ><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+  {% elif ran.0 == '101' and ran.1 == '150' %}
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li class="active"><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li ><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+  {% elif ran.0 == '151' and ran.1 == '190' %}
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li class="active"><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+  {% elif ran.0 == '191' and ran.1 == '200' %}
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li class="active"><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+  {% elif ran.0 == '1' and ran.1 == '200' %}
+  <li class="active"><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+  {% else %}
+  <li><a href="{% url 'lists:details' type|render '1' '200' %}">Tout</a></li>
+  <li><a href="{% url 'lists:details' type|render '1' '50' %}">1-50</a></li>
+  <li><a href="{% url 'lists:details' type|render '51' '100' %}">51-100</a></li>
+  <li><a href="{% url 'lists:details' type|render '101' '150' %}">101-150</a></li>
+  <li><a href="{% url 'lists:details' type|render '151' '190' %}">151-190</a></li>
+  <li ><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
+
+  {% endif %}
+
+
+</ul>
+<div class="row">
+
+    <ul class="pagination nav navbar-right">
+      {% if list.has_previous %}
+      <li><a href="?page={{ list.previous_page_number }}">Précédente</a></li>
+      {% endif %}
+      {% for page in list.paginator.page_range %}
+      <li class="{% if list.number == page  %}active{% endif %}"><a href="?page={{page}}">{{ page }}</a></li>
+      {% endfor %}
+
+      {% if list.has_next %}
+      <li> <a href="?page={{ list.next_page_number }}">Suivante</a></li>
+      {% endif %}
+    </ul>
+</div>
+<br>
+{% for l in list %}
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="row">
+
+      <div class="col-md-8">{{l.name}}</div>
+      <div class="col-md-3" align="right">Niveau: {{l.level}}</div>
+
+      <div class="col-md-1" align="right">
+        {% add_button user l %}
+        </div>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <br> IMAGE<br>
+              {{l.type}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mid">
+          {% if l.effects|parse:"" %}
+          <i>Effets:</i> <br>
+          {% for s in l.effects|parse:"" %}
+          {{s}}<br>
+          {% endfor %}
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          {% if l.caracs|parse:"caracs" %}
+          <div class="row">
+            <div class="col-md-12">
+
+              <i>Caractéristiques:</i><br>
+
+              {% for s in l.caracs|parse:"caracs" %}
+              {{s}}<br>
+              {% endfor %}
+
+            </div>
+          </div>
+          {% endif %}
+          {% if l.conds|parse:"conds" %}
+          <div class="row">
+            {% if l.caracs|parse:"caracs" %}
+            <div class="col-md-12 top">
+              {% else %}
+              <div class="col-md-12">
+
+                {% endif %}
+                <i>Conditions:</i><br>
+
+                {% for s in l.conds|parse:"conds" %}
+                {{s}}<br>
+                {% endfor %}
+
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div id="recipe" class="col-md-12">
+
+            {% if l.recipe|parse:"recipe" %}
+            <p><i>Recette: </i>
+              {% for s in l.recipe|parse:"recipe" %}
+              {{s}}
+              {% endfor %}
+            </p>
+            {% else%}
+            <p>Recette indisponible</p>
+            {% endif %}
+
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    {% endfor %}
+<div class="row">
+    <ul class="pagination nav navbar-right">
+
+      {% if list.has_previous %}
+      <li><a href="?page={{ list.previous_page_number }}">Précédente</a></li>
+      {% endif %}
+      {% for page in list.paginator.page_range %}
+      <li class="{% if list.number == page  %}active{% endif %}"><a href="?page={{page}}">{{ page }}</a></li>
+      {% endfor %}
+
+      {% if list.has_next %}
+      <li> <a href="?page={{ list.next_page_number }}">Suivante</a></li>
+      {% endif %}
+    </ul>
+</div>

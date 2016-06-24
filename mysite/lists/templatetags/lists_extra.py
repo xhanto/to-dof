@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import template
-from lists.models import List,UserProfile,User,Ressource,Arme,Equipement
+from lists.models import List,UserProfile,User,Objet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 import ast
@@ -29,13 +29,8 @@ def itemlist(context,type,ran,p,user,request):
     equipements = ['Bouclier','Anneau','Amulette','Cape','Bottes','Chapeau','Ceinture','Trophée','Sac à dos']
     ressources = ['Idole']
 
-    if type in armes:
-        items_list = Arme.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
-    elif type in equipements:
-        items_list = Equipement.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
-    elif type in ressources:
-        items_list = Ressource.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
-        return 0
+    items_list = Objet.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
+    
     paginator = Paginator(items_list,50)
     page = request.GET.get('page')
 
@@ -117,7 +112,8 @@ def get_mp(value):
 
 
 @register.inclusion_tag('includes/add_button.html',takes_context=True)
-def add_button(context,user):
+def add_button(context,user,item):
     if user.is_authenticated():
         myList = List.objects.filter(user__exact=user,pub_date__lte=timezone.now()).order_by('-pub_date')
-        return {'myLists': myList,'user':user}
+
+        return {'myLists': myList,'user':user, 'item': item}

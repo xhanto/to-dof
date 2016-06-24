@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import User,List,UserProfile
+from .models import User,List,UserProfile, ListItem, Objet
 from .forms import UserForm, UserProfileForm, NewListForm
 from django.template import RequestContext
 
@@ -101,7 +101,9 @@ def create_list(request):
             newlist = list_form.save(commit=False)
             newlist.user = request.user
             serv = UserProfile.objects.filter(user__exact=request.user)
-            newlist.server = serv[0].server
+            print serv
+            if serv:
+                newlist.server = serv[0].server
             newlist.save()
             completed=True
         else:
@@ -122,6 +124,46 @@ def create_list(request):
         dict_ret.update(add_dict)
     return render(request,'lists/index.html',dict_ret,context)
 
+@login_required
+def create_and_add(request,item_id):
+    context = RequestContext(request)
+    completed=False
+    added = False
+    if request.method == 'POST':
+        list_form = NewListForm(data=request.POST)
+        if list_form.is_valid():
+            newlist = list_form.save(commit=False)
+            newlist.user = request.user
+            serv = UserProfile.objects.filter(user__exact=request.user)
+            if serv:
+                newlist.server = serv[0].server
+            newl = newlist.save()
+            item_list = ListItem()
+            item_list.itemID = item_id
+            item_list.ID = newl.id
+            item_list.save()
+            completed=True
+            added = True
+        else:
+            print list_form.errors
+    else:
+        list_form = NewListForm()
+    dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed,'added':added}
+
+    url =  request.META['HTTP_REFERER']
+    p = url.split("lists")
+
+    if "details" in p[1]:
+        p = p[1].split("/")
+        if "page" in p[4]:
+            n = p[4].split('=')[1]
+        else:
+            n = 1
+        add_dict = {'type': p[2], 'ran': [p[3],p[4].split("?")[0]],'page': n}
+        dict_ret.update(add_dict)
+    return render(request,'lists/index.html',dict_ret,context)
+
+
 def item_view(request,type,ran1,ran2):
     context = RequestContext(request)
     if type == "Epee":
@@ -138,6 +180,29 @@ def item_view(request,type,ran1,ran2):
     return render(request,'lists/index.html',{'type': ret, 'ran': ran},context)
 
 @login_required
-def list_view(request):
+def add_item(request,list_id,item_id):
+    context = RequestContext(request)
+    item = ListItem()
+    listObj = List.objects.get(pk=list_id)
+    itemObj = Objet.objects.get(ID=item_id)
+    item.ID = listObj
+    item.itemID = itemObj
+    item.save()
+    dict_ret = {'added': True}
+    url =  request.META['HTTP_REFERER']
+    p = url.split("lists")
+    print p
+    if "details" in p[1]:
+        p = p[1].split("/")
+        if "page" in p[4]:
+            n = p[4].split('=')[1]
+        else:
+            n = 1
+        add_dict = {'type': p[2], 'ran': [p[3],p[4].split("?")[0]],'page': n}
+        dict_ret.update(add_dict)
+    return render(request,'lists/index.html',dict_ret,context)
 
-    return 0
+def list_view(request,list_id):
+
+
+    return render(request,'lists/index.html',dict_ret,context)

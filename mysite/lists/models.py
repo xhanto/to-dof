@@ -32,7 +32,13 @@ class List(models.Model):
 
 class Objet(models.Model):
     ID = models.PositiveIntegerField(primary_key=True)
-    table = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
+    level = models.PositiveSmallIntegerField(default=0)
+    type = models.CharField(max_length=50)
+    effects = models.TextField()
+    caracs = models.TextField()
+    conds = models.TextField()
+    recipe = models.TextField()
     list_display = ('ID')
     def __unicode__(self):
         return str(self.ID)
@@ -43,137 +49,3 @@ class ListItem(models.Model):
     list_display = ('ID')
     def __unicode__(self):
             return str(self.ID)
-
-class Ressource(models.Model):
-    ID = models.ForeignKey(Objet,default=0)
-    name = models.CharField(max_length=100)
-    level = models.PositiveSmallIntegerField(default=0)
-    type = models.CharField(max_length=50)
-    effects = models.TextField()
-    caracs = models.TextField()
-    conds = models.TextField()
-    recipe = models.TextField()
-    list_display = ('ID')
-    def __unicode__(self):
-        return str(self.ID)
-    def seteffects(self,x):
-        self.effects = json.dumps(x)
-    def geteffects(self,x):
-        return json.loads(self.effects)
-
-    def setcaracs(self,x):
-        self.caracs = json.dumps(x)
-    def getcaracs(self,x):
-        return json.loads(self.caracs)
-
-    def setconds(self,x):
-        self.conds = json.dumps(x)
-    def getconds(self,x):
-        return json.loads(self.conds)
-
-    def setrecipe(self,x):
-        self.recipe = json.dumps(x)
-    def getrecipe(self,x):
-        return json.loads(self.recipe)
-
-class Arme(models.Model):
-    ID = models.ForeignKey(Objet,default=0)
-    name = models.CharField(max_length=100)
-    level = models.PositiveSmallIntegerField(default=0)
-    type = models.CharField(max_length=50)
-    effects = models.TextField()
-    caracs = models.TextField()
-    conds = models.TextField()
-    recipe = models.TextField()
-    list_display = ('ID')
-
-    def __unicode__(self):
-        return str(self.ID)
-
-    def seteffects(self,x):
-        self.effects = json.dumps(x)
-    def geteffects(self,x):
-        return json.loads(self.effects)
-
-    def setcaracs(self,x):
-        self.caracs = json.dumps(x)
-    def getcaracs(self,x):
-        return json.loads(self.caracs)
-
-    def setconds(self,x):
-        self.conds = json.dumps(x)
-    def getconds(self,x):
-        return json.loads(self.conds)
-
-    def setrecipe(self,x):
-        self.recipe = json.dumps(x)
-    def getrecipe(self,x):
-        return json.loads(self.recipe)
-
-class Equipement(models.Model):
-    ID = models.ForeignKey(Objet,default=0)
-    name = models.CharField(max_length=100)
-    level = models.PositiveSmallIntegerField(default=0)
-    type = models.CharField(max_length=50)
-    effects = models.TextField()
-    caracs = models.TextField()
-    conds = models.TextField()
-    recipe = models.TextField()
-    list_display = ('ID')
-
-    def __unicode__(self):
-        return str(self.ID)
-
-    def seteffects(self,x):
-        self.effects = json.dumps(x)
-    def geteffects(self,x):
-        return json.loads(self.effects)
-
-    def setcaracs(self,x):
-        self.caracs = json.dumps(x)
-    def getcaracs(self,x):
-        return json.loads(self.caracs)
-
-    def setconds(self,x):
-        self.conds = json.dumps(x)
-    def getconds(self,x):
-        return json.loads(self.conds)
-
-    def setrecipe(self,x):
-        self.recipe = json.dumps(x)
-    def getrecipe(self,x):
-        return json.loads(self.recipe)
-
-class Consommable(models.Model):
-    ID = models.ForeignKey(Objet,default=0)
-    name = models.CharField(max_length=100)
-    level = models.PositiveSmallIntegerField(default=0)
-    type = models.CharField(max_length=50)
-    effects = models.TextField()
-    caracs = models.TextField()
-    conds = models.TextField()
-    recipe = models.TextField()
-    list_display = ('ID')
-
-    def __unicode__(self):
-        return str(self.ID)
-
-    def seteffects(self,x):
-        self.effects = json.dumps(x)
-    def geteffects(self,x):
-        return json.loads(self.effects)
-
-    def setcaracs(self,x):
-        self.caracs = json.dumps(x)
-    def getcaracs(self,x):
-        return json.loads(self.caracs)
-
-    def setconds(self,x):
-        self.conds = json.dumps(x)
-    def getconds(self,x):
-        return json.loads(self.conds)
-
-    def setrecipe(self,x):
-        self.recipe = json.dumps(x)
-    def getrecipe(self,x):
-        return json.loads(self.recipe)

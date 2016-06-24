@@ -38,7 +38,9 @@
         </div>
 
     {% endif %}
-
+    {% if added %}
+    <p style="color:green"> Objet ajouté </p>
+    {% endif %}
     {% if type %}
       {% itemlist type ran page user request %}
     {% else %}

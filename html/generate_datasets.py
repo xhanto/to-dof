@@ -65,7 +65,8 @@ def recover(filename):
     df_rec = pd.read_pickle(filename + "_data2.pickle")
     return len(df_rec)
 
-files = ["ressources","equipements","consommables"]
+files = ["equipements","armes","consommables"]
+#files = ["ressources"]
 base = "http://www.dofus.com"
 
 parser = argparse.ArgumentParser(description='Dataset generation')
@@ -80,7 +81,7 @@ recovery = args.recovery
 
 for f in files:
 
-    itemlist = pickle.load(open(f+".pickle","rb"))
+    itemlist = pickle.load(open(f+"_links.pickle","rb"))
     print "----- Obtaining " + f + " -----"
     count = len(itemlist)
     i = 0
@@ -117,7 +118,7 @@ for f in files:
         # Get name
         head = soup.find("head")
         title = head.find("title").string
-        name = title.split("-")[0][:-1]
+        name = title.split(" -")[0]
 
         # Get ID
         m = re.search(r"(\d+)",item)
