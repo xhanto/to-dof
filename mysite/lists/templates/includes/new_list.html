@@ -1,9 +1,16 @@
 {% load bootstrap %}
 
 {% if completed %}
-<strong>Liste enregistrée!</strong>
+<strong>Liste enregistrée!</strong></br>
+{% if added %}
+<strong>Object ajouté</strong>
+{% endif %}
+{% else %}
+{% if item_id %}
+<form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/{{item_id}}" enctype="multipart/form-data">
 {% else %}
 <form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/" enctype="multipart/form-data">
+{% endif %}
   {% csrf_token %}
   {% for field in list_form %}
     <div class="form-group">
@@ -19,7 +26,12 @@
 
   <div class="form-group">
     <div class="col-sm-10  col-md-12 col-sm-offset-1">
-      <input type="submit" class="btn btn-primary" name="submit" value="Créer" />
+      {% if item_id %}
+        <input type="submit" class="btn btn-primary" name="submit" value="Créer et ajouter" />
+      {% else %}
+        <input type="submit" class="btn btn-primary" name="submit" value="Créer" />
+      {% endif %}
+
     </div>
   </div>
 

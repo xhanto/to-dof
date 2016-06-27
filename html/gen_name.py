@@ -1,6 +1,6 @@
 import pandas as pd
 
-sets = ["armes","consommables","equipements","ressources"]
+sets = ["armes","consommables","equipements","ressources","familiers"]
 s2 = ["Arme","Consommable","Equipement","Ressource"]
 d = dict()
 l = []

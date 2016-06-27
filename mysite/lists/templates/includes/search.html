@@ -1,16 +1,13 @@
 {% load staticfiles %}
 <br></br>
-<h4>Recherche</h4>
 
-<form class="navbar-form navbar-left" role="search">
-    <div class="form-group" >
-        <input type="text" class="form-control" placeholder="Search">
-
-    <button type="submit" class="btn btn-default btn-search"><span class="glyphicon glyphicon-search"></span></button>
-    </div>
-</form>
 
 <h4>Equipements</h4>
+<form class="navbar-form navbar-left" role="search">
+    <div class="form-group" >
+        <input type="text" class="form-control" placeholder="Recherche">
+    </div>
+</form>
 <ul class="list-group row">
   <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Chapeau' '1' '200' %}"><img src="{% static "lists/images/coiffe.png" %}" width="100%" alt="" /></a></li>
   <li class="list-group-item col-xs-5"><a href="{% url 'lists:details' 'Cape' '1' '200' %}"><img src="{% static "lists/images/cape.png" %}" width="100%" alt="" /></a></li>

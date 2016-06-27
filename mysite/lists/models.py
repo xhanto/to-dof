@@ -32,7 +32,7 @@ class List(models.Model):
 
 class Objet(models.Model):
     ID = models.PositiveIntegerField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,db_index=True)
     level = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=50)
     effects = models.TextField()
@@ -46,6 +46,17 @@ class Objet(models.Model):
 class ListItem(models.Model):
     ID = models.ForeignKey(List)
     itemID = models.ForeignKey(Objet)
+    count = models.PositiveSmallIntegerField(default = 0)
+    priority = models.PositiveSmallIntegerField(default = 0)
+    value = models.PositiveIntegerField(default = 0)
     list_display = ('ID')
     def __unicode__(self):
             return str(self.ID)
+
+class Recette(models.Model):
+    item_ID =  models.ForeignKey('Objet',related_name="item_ID")
+    ing_ID =  models.ForeignKey('Objet',related_name="ing_ID")
+    count = models.PositiveSmallIntegerField(default=0)
+    list_display = ('item_ID')
+    def __unicode__(self):
+        return str(self.item_ID)

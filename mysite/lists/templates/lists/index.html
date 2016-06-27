@@ -30,7 +30,9 @@
                 <h4 class="modal-title">Ajouter une nouvelle liste</h4>
               </div>
               <div class="modal-body">
+
                 <p>{% include "includes/new_list.html" %}</p>
+
               </div>
             </div>
 
@@ -44,14 +46,17 @@
     {% if type %}
       {% itemlist type ran page user request %}
     {% else %}
+    {% if list_id %}
+      {% list_view user list_id %}
+      {% else %}
     <h3>Bienvenue sur la page d'accueil</h3>
     <p>Diverses options seront affichées ici.</p>
-
+    {% endif %}
     {% endif %}
   </div>
     <div class="col-md-1"></div>
   <div class="col-xs-6 col-md-2">
-    {% include "includes/research.html" %}
+    {% include "includes/search.html" %}
   </div>
 </div>
 

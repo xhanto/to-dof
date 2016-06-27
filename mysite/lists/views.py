@@ -101,11 +101,11 @@ def create_list(request):
             newlist = list_form.save(commit=False)
             newlist.user = request.user
             serv = UserProfile.objects.filter(user__exact=request.user)
-            print serv
             if serv:
                 newlist.server = serv[0].server
             newlist.save()
             completed=True
+
         else:
             print list_form.errors
     else:
@@ -127,6 +127,7 @@ def create_list(request):
 @login_required
 def create_and_add(request,item_id):
     context = RequestContext(request)
+
     completed=False
     added = False
     if request.method == 'POST':
@@ -137,10 +138,11 @@ def create_and_add(request,item_id):
             serv = UserProfile.objects.filter(user__exact=request.user)
             if serv:
                 newlist.server = serv[0].server
+
             newl = newlist.save()
             item_list = ListItem()
-            item_list.itemID = item_id
-            item_list.ID = newl.id
+            item_list.itemID_id = item_id
+            item_list.ID_id = newlist.id
             item_list.save()
             completed=True
             added = True
@@ -148,7 +150,8 @@ def create_and_add(request,item_id):
             print list_form.errors
     else:
         list_form = NewListForm()
-    dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed,'added':added}
+
+    dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed,'added':added,'item_id' : item_id}
 
     url =  request.META['HTTP_REFERER']
     p = url.split("lists")
@@ -203,6 +206,5 @@ def add_item(request,list_id,item_id):
     return render(request,'lists/index.html',dict_ret,context)
 
 def list_view(request,list_id):
-
-
-    return render(request,'lists/index.html',dict_ret,context)
+    context = RequestContext(request)
+    return render(request,'lists/index.html',{'list_id': list_id},context)

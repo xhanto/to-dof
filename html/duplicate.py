@@ -2,6 +2,7 @@ import pandas as pd
 import pickle
 import re
 sets = ["armes","consommables","equipements","ressources"]
+sets = ["familiers"]
 s2 = ["Arme","Consommable","Equipement","Ressource"]
 d = dict()
 l = []

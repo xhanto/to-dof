@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import template
-from lists.models import List,UserProfile,User,Objet
+from lists.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 import ast
@@ -30,7 +30,7 @@ def itemlist(context,type,ran,p,user,request):
     ressources = ['Idole']
 
     items_list = Objet.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
-    
+
     paginator = Paginator(items_list,50)
     page = request.GET.get('page')
 
@@ -117,3 +117,33 @@ def add_button(context,user,item):
         myList = List.objects.filter(user__exact=user,pub_date__lte=timezone.now()).order_by('-pub_date')
 
         return {'myLists': myList,'user':user, 'item': item}
+
+@register.inclusion_tag('includes/list_view.html',takes_context=True)
+def list_view(context,user,list_id):
+    liste = List.objects.filter(id__exact = list_id)
+    items = ListItem.objects.filter(ID_id = list_id)
+    if user.is_authenticated():
+        return {'myList': liste,'items':items,'user':user}
+    else:
+        return {'myList':liste,'items':items}
+
+@register.filter(name='get_item')
+def get_item(value):
+    items = []
+    for i in value:
+        item = Objet.objects.filter(ID__exact=i.itemID_id)
+        items.append(item[0])
+
+    return items
+
+@register.filter(name='get_recipe')
+def get_recipe(value):
+
+    itemID = value.ID
+    recipe = Recette.objects.filter(item_ID=itemID)
+    return recipe
+
+@register.filter(name='get_range')
+def get_range(value):
+
+    return range(value+1)

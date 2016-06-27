@@ -65,7 +65,7 @@ def recover(filename):
     df_rec = pd.read_pickle(filename + "_data2.pickle")
     return len(df_rec)
 
-files = ["ressources"]
+files = ["familiers"]
 #files = ["ressources"]
 base = "http://www.dofus.com"
 
@@ -91,7 +91,7 @@ for f in files:
     else:
          start = 0
 
-    start = 2358
+    
 
     data = []
     for item in itemlist:

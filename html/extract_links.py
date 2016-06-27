@@ -4,7 +4,7 @@ from math import ceil
 from BeautifulSoup import BeautifulSoup
 
 #pages = ["equipements","armes","consommables"]
-pages = ["ressources"]
+pages = ["familiers"]
 def count_pages(page):
     url = 'http://www.dofus.com/fr/mmorpg/encyclopedie/' + page
     r = requests.get(url)

@@ -13,7 +13,7 @@ def split_recipe(l,base):
         match = re.match(r"([0-9]+)(.+)", i)
         if match:
             items = match.groups()
-            print base
+            #print base
             row = namesids.loc[namesids['name'] == items[1]]
             ind = row.iloc[0]['id']
             entry = dict(
