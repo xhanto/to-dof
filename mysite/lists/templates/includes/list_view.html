@@ -9,11 +9,14 @@
     <div class="row">
 
       <div class="col-md-8">{{l.name}}</div>
-      <div class="col-md-3" align="right">Niveau: {{l.level}}</div>
+      <div class="col-md-3">Niveau: {{l.level}}</div>
 
-      <!-- <div class="col-md-1" align="right">
-        { remove_button user l %}
-        </div> -->
+      <div class="col-md-1" align="right">
+        {% if verified user myList.user %}
+
+        {% endif %}
+      <!--  { remove_button user l %} -->priority remove
+        </div>
       </div>
     </li>
     <li class="list-group-item">
@@ -31,7 +34,7 @@
           {% for r in l|get_recipe %}
           <form role = "form" class="form">
                 <input type = "number" class = "input-mini" min="0" max ={{r.count}}>
-              </form>/ {{r.count}} {{r.ing_ID.name}}<br>
+              </form>/ {{r.count}} {{r.ing_ID.name}}</br>
           {% endfor %}
           {% else%}
           <p>Recette indisponible</p>

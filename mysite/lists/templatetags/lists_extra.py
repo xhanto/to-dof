@@ -145,5 +145,13 @@ def get_recipe(value):
 
 @register.filter(name='get_range')
 def get_range(value):
-
     return range(value+1)
+
+@register.simple_tag(name='verified')
+def verified(user,list_user):
+    print user
+    print list_user
+    if user.is_authenticated() and user == list_user:
+        return True
+    else:
+        return False
