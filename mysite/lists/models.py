@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from lists.choices import *
 import json
 
 # Create your models here.
@@ -10,7 +11,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     list_count = models.IntegerField(default=0)
-    server = models.CharField(max_length=60,blank=True,null=True)
+    server = models.IntegerField(choices=SERVER_CHOICES, default=0)
     mp = models.CharField(max_length=100,blank=True,null=True)
 
     def __unicode__(self):
@@ -19,7 +20,7 @@ class UserProfile(models.Model):
 class List(models.Model):
     list_name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
-    server = models.CharField(max_length=60,blank=True,null=True)
+    server = models.IntegerField(choices=SERVER_CHOICES, default=0)
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     public = models.BooleanField(default=True)

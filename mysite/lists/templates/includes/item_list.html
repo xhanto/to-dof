@@ -76,11 +76,11 @@
 {% for l in list %}
 
 <ul class="list-group">
-  <li class="list-group-item">
+  <li class="list-group-item top">
     <div class="row">
 
-      <div class="col-md-8">{{l.name}}</div>
-      <div class="col-md-3" align="right">Niveau: {{l.level}}</div>
+      <div class="col-md-8 vertical">{{l.name}}</div>
+      <div class="col-md-3 vertical" align="right">Niveau: {{l.level}}</div>
 
       <div class="col-md-1" align="right">
 {% if user.is_authenticated %}

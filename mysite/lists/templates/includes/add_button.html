@@ -1,17 +1,19 @@
 {% load lists_extra %}
+
+{% if user.is_authenticated %}
 <div class="dropdown">
-  <button class="btn dropdown-toggle form-control" type="button" data-toggle="dropdown">
-    <span class="glyphicon glyphicon-plus-sign" style="color:#00cc00"></span></button>
-    <ul class="dropdown-menu">
+  <div class="btn dropdown-toggle form-control top" type="button" data-toggle="dropdown">
+    <span class="glyphicon glyphicon-plus-sign" style="color:#00ff00"></span></div>
+    <ul class="dropdown-menu scrollable-menu">
       <li class="dropdown-header">Ajouter à</li>
-      {% if user.is_authenticated %}
+      <li class="list-group-item"><a data-toggle="myModal" href="{% url 'lists:newlist' item.ID %}">Nouvelle liste</a></li>
+
         {% if myLists %}
           <ul class="list-group">
             {% for list in myLists %}
               <li class="list-group-item"><a id="add" href="{% url 'lists:add' list.id item.ID %}">{{ list.list_name }}</a></li>
             {% endfor %}
             {% endif %}
-            {% endif %}
-      <li class="list-group-item"><a data-toggle="myModal" href="{% url 'lists:newlist' item.ID %}">Nouvelle liste</a></li>
     </ul>
   </div>
+  {% endif %}

@@ -1,6 +1,8 @@
 from lists.models import UserProfile, List
 from django.contrib.auth.models import User
 from django import forms
+from lists.choices import *
+
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -15,7 +17,7 @@ class UserForm(forms.ModelForm):
         }
 
 class UserProfileForm(forms.ModelForm):
-
+    server = forms.ChoiceField(choices = SERVER_CHOICES, initial='0', widget=forms.Select())
     class Meta:
         model = UserProfile
         fields = ('server', 'mp')

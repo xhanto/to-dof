@@ -1,38 +1,92 @@
 {% load lists_extra %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>{{myList.list_name}}</h2>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-12">
 
-<h2>{{myList.name}}</h2>
+<div class="btn-group btn-group-justified">
+
+
+<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#total">Total des ingrédients</a>
+
+<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#import">Importer</a>
+
+
+<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#edit">Éditer</a>
+<a type="button" class="btn btn-success" data-toggle="collapse" data-target="#share">Partager</a>
+
+{% if myList.public %}
+<a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-warning">Rendre privée</a>
+{% else %}
+<a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-success">Publier</a>
+{% endif %}
+
+<a href="{% url 'lists:delete' myList.id %}" type="button" class="btn btn-danger">Supprimer</a>
+</div>
+</div>
+</div>
+
+<br>
+
+<div id="import" class="collapse">
+  <form role = "form" class="form-inline">
+  <label for="imp">URL à importer:</label><br>
+  <input type="text" class="form-control" id="imp">
+    <button type="submit" class="btn btn-default">Importer</button>
+  </form>
+
+</div>
+<div id="total" class="collapse">
+  Total
+</div>
+<div id="edit" class="collapse">
+  Editer
+</div>
+<div id="share" class="collapse">
+
+  <input type="text" class="form-control" value="{{ path }}">
+
+</div>
 <br>
 {% for l in items|get_item %}
 
 <ul class="list-group">
-  <li class="list-group-item">
+  <li class="list-group-item top">
     <div class="row">
 
-      <div class="col-md-8">{{l.name}}</div>
-      <div class="col-md-3">Niveau: {{l.level}}</div>
+      <div class="col-md-7 vertical">{{l.name}}</div>
+      <div class="col-md-2 vertical">Niveau: {{l.level}}</div>
 
-      <div class="col-md-1" align="right">
-        {% if verified user myList.user %}
-
+      <div class="col-md-3" align="right">
+        {% if user|verified:myList %}
+        Priorité:  <form role = "form" class="form-priority">
+          <input type = "number" class = "input-mini" min="0" max =100 style="color:#000">
+        </form>
+        <a href="{% url 'lists:remove_item' myList.id l.ID %}" title="Supprimer cet objet">
+          <span class="glyphicon glyphicon-minus-sign" style="color:#969696"></span></a>
         {% endif %}
-      <!--  { remove_button user l %} -->priority remove
         </div>
       </div>
     </li>
-    <li class="list-group-item">
+    <li class="list-group-item main">
       <div class="row">
         <div class="col-md-4">
           <div class="row">
             <div class="col-md-12">
-              <br> IMAGE<br>
+              <br> IMAGE<br>IMG<br>
               {{l.type}}
             </div>
           </div>
         </div>
-        <div class="col-md-8">
+
+        <div class="col-md-5 mid">
           {% if l|get_recipe %}
           {% for r in l|get_recipe %}
-          <form role = "form" class="form">
+          <form role = "form" class="form-recipe">
                 <input type = "number" class = "input-mini" min="0" max ={{r.count}}>
               </form>/ {{r.count}} {{r.ing_ID.name}}</br>
           {% endfor %}
@@ -40,6 +94,14 @@
           <p>Recette indisponible</p>
           {% endif %}
 
+        </div>
+        <div class="col-md-3">
+          {% if l.effects|parse:"" %}
+          <i>Effets:</i> <br>
+          {% for s in l.effects|parse:"" %}
+          {{s}}<br>
+          {% endfor %}
+          {% endif %}
         </div>
       </li>
 

@@ -11,6 +11,10 @@ urlpatterns = [
     url(r'^newlist/(?P<item_id>[0-9]+)$', views.create_and_add, name='newlist'),
     url(r'^newlist/$', views.create_list, name='newlist'),
     url(r'^add/(?P<list_id>[0-9]+)/(?P<item_id>[0-9]+)$', views.add_item, name='add'),
+    url(r'^remove_item/(?P<list_id>[0-9]+)/(?P<item_id>[0-9]+)$', views.remove_item, name='remove_item'),
     url(r'^details/(?P<type>[A-Z]{1}[a-z]+)/(?P<ran1>[0-9]+)/(?P<ran2>[0-9]+)$',views.item_view,name='details'),
     url(r'^detail/(?P<list_id>[0-9]+)$', views.list_view, name='detail'),
+    url(r'^visibility/(?P<list_id>[0-9]+)$', views.visibility, name='visibility'),
+    url(r'^delete/(?P<list_id>[0-9]+)$', views.delete, name='delete'),
+    url(r'^edit_list/(?P<list_id>[0-9]+)$', views.edit_list, name='edit_list'),
 ]

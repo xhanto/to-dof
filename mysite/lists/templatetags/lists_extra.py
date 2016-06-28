@@ -121,11 +121,12 @@ def add_button(context,user,item):
 @register.inclusion_tag('includes/list_view.html',takes_context=True)
 def list_view(context,user,list_id):
     liste = List.objects.filter(id__exact = list_id)
+    path = "http://127.0.0.1:8000" + context['request'].get_full_path()
     items = ListItem.objects.filter(ID_id = list_id)
     if user.is_authenticated():
-        return {'myList': liste,'items':items,'user':user}
+        return {'myList': liste[0],'items':items,'user':user,'path':path}
     else:
-        return {'myList':liste,'items':items}
+        return {'myList':liste[0],'items':items,'path':path}
 
 @register.filter(name='get_item')
 def get_item(value):
@@ -147,11 +148,9 @@ def get_recipe(value):
 def get_range(value):
     return range(value+1)
 
-@register.simple_tag(name='verified')
-def verified(user,list_user):
-    print user
-    print list_user
-    if user.is_authenticated() and user == list_user:
+@register.filter(name='verified')
+def verified(user,liste):
+    if user.is_authenticated() and user == liste.user:
         return True
     else:
         return False

@@ -49,14 +49,32 @@
     cursor: pointer;
 }
 .mid{
+  border-right: 1px solid #bbb;
+  border-left: 1px solid #bbb;
+
+}
+.left{
   border-right: 1px solid #ddd;
+}
+
+.right{
   border-left: 1px solid #ddd;
 }
 
 .top{
-  border-top: 1px solid #ddd;
+  background-color: #222;
+  color: #fff;
 }
+.vertical{
+  /*vertical-align: middle;*/
+  /*display: inline-block;*/
+  padding-top: 5px;
 
+}
+.main {
+  background-color: #fff
+
+}
 .affix {
     top: 0;
     width: 100%;
@@ -76,5 +94,11 @@ span.glyphicon-search {
   margin-left: -4px;
 }
 
-.input-mini { width: 60px; } .input-small { width: 90px; } .input-medium { width: 150px; } .input-large { width: 210px; } .input-xlarge { width: 270px; } .input-xxlarge { width: 530px; }
-.form {display: inline-block;}
+.input-mini { width: 45px; } .input-small { width: 90px; } .input-medium { width: 150px; } .input-large { width: 210px; } .input-xlarge { width: 270px; } .input-xxlarge { width: 530px; }
+.form-priority {display: inline;}
+.form-recipe {display: inline-block;}
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}

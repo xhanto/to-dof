@@ -20,7 +20,9 @@
 {% if serverList %}
 <ul>
   {% for l in serverList %}
+  {% if l.public %}
   <li><a href="{% url 'lists:detail' l.id %}">{{ l.list_name }},  /w {{l.user|get_mp}}</a></li>
+  {% endif %}
   {% endfor %}
 </ul>
 {% else %}

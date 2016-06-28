@@ -7,9 +7,10 @@
 {% endif %}
 {% else %}
 {% if item_id %}
-<form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/{{item_id}}" enctype="multipart/form-data">
+
+<form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/{{item_id}}?next={{url}}" enctype="multipart/form-data">
 {% else %}
-<form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/" enctype="multipart/form-data">
+<form role="form" class="form-horizontal" id="list_form" method="post" action="/lists/newlist/?next={{url}}" enctype="multipart/form-data">
 {% endif %}
   {% csrf_token %}
   {% for field in list_form %}

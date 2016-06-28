@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import get_object_or_404,render
+from django.shortcuts import get_object_or_404,render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -112,16 +112,9 @@ def create_list(request):
         list_form = NewListForm()
     dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed}
     url =  request.META['HTTP_REFERER']
-    p = url.split("lists")
-
-    if "details" in p[1]:
-        p = p[1].split("/")
-        if "page" in p[4]:
-            n = p[4].split('=')[1]
-        else:
-            n = 1
-        add_dict = {'type': p[2], 'ran': [p[3],p[4].split("?")[0]],'page': n}
-        dict_ret.update(add_dict)
+    dict_ret.update({'url' : url})
+    if 'next' in request.GET:
+        return redirect(request.GET['next'],dict_ret,context)
     return render(request,'lists/index.html',dict_ret,context)
 
 @login_required
@@ -154,16 +147,9 @@ def create_and_add(request,item_id):
     dict_ret = {'newlist': True, 'list_form': list_form,'completed':completed,'added':added,'item_id' : item_id}
 
     url =  request.META['HTTP_REFERER']
-    p = url.split("lists")
-
-    if "details" in p[1]:
-        p = p[1].split("/")
-        if "page" in p[4]:
-            n = p[4].split('=')[1]
-        else:
-            n = 1
-        add_dict = {'type': p[2], 'ran': [p[3],p[4].split("?")[0]],'page': n}
-        dict_ret.update(add_dict)
+    dict_ret.update({'url' : url})
+    if 'next' in request.GET:
+        return redirect(request.GET['next'],dict_ret,context)
     return render(request,'lists/index.html',dict_ret,context)
 
 
@@ -194,7 +180,6 @@ def add_item(request,list_id,item_id):
     dict_ret = {'added': True}
     url =  request.META['HTTP_REFERER']
     p = url.split("lists")
-    print p
     if "details" in p[1]:
         p = p[1].split("/")
         if "page" in p[4]:
@@ -208,3 +193,52 @@ def add_item(request,list_id,item_id):
 def list_view(request,list_id):
     context = RequestContext(request)
     return render(request,'lists/index.html',{'list_id': list_id},context)
+
+@login_required
+def remove_item(request,list_id,item_id):
+    context = RequestContext(request)
+    listObj = ListItem.objects.filter(ID_id=list_id).filter(itemID_id = item_id)
+    if listObj is not None:
+        listObj[0].delete()
+    url =  request.META['HTTP_REFERER']
+
+    return redirect(url,{"itemRemoved": True})
+
+@login_required
+def visibility(request,list_id):
+    context = RequestContext(request)
+    liste = List.objects.get(pk=list_id)
+    url =  request.META['HTTP_REFERER']
+    print url
+
+    if liste.user == request.user:
+        if liste.public:
+            liste.public = False
+        else:
+            liste.public = True
+        liste.save()
+        return redirect(url,{'changed':True})
+    else:
+        return redirect(url,{'changed':False})
+
+@login_required
+def delete(request,list_id):
+    context = RequestContext(request)
+    liste = List.objects.get(pk=list_id)
+    if liste.user == request.user:
+        liste.delete()
+        return render(request,'lists/index.html',{'listRemoved':True},context)
+    else:
+        url =  request.META['HTTP_REFERER']
+        return redirect(url,{'listError': True})
+
+@login_required
+def edit_list(request,list_id):
+    context = RequestContext(request)
+    liste = List.objects.get(pk=list_id)
+    if liste.user == request.user:
+
+        return render(request,'lists/index.html',{'listRemoved':True},context)
+    else:
+        url =  request.META['HTTP_REFERER']
+        return redirect(url,{'listError': True})
