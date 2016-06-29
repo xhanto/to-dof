@@ -7,7 +7,7 @@ import ast
 import re
 from django.utils.encoding import smart_unicode
 import json
-
+from collections import Counter
 
 register = template.Library()
 
@@ -119,12 +119,12 @@ def add_button(context,user,item):
         return {'myLists': myList,'user':user, 'item': item}
 
 @register.inclusion_tag('includes/list_view.html',takes_context=True)
-def list_view(context,user,list_id):
+def list_view(context,user,list_id, edit_form):
     liste = List.objects.filter(id__exact = list_id)
     path = "http://127.0.0.1:8000" + context['request'].get_full_path()
     items = ListItem.objects.filter(ID_id = list_id)
     if user.is_authenticated():
-        return {'myList': liste[0],'items':items,'user':user,'path':path}
+        return {'myList': liste[0],'items':items,'user':user,'path':path,'edit_form':edit_form}
     else:
         return {'myList':liste[0],'items':items,'path':path}
 
@@ -150,7 +150,20 @@ def get_range(value):
 
 @register.filter(name='verified')
 def verified(user,liste):
-    if user.is_authenticated() and user == liste.user:
-        return True
-    else:
-        return False
+    if user is not None:
+        if user.is_authenticated() and user == liste.user:
+            return True
+    return False
+
+@register.filter(name='get_total')
+def get_total(values):
+    counter = Counter()
+    for i in values:
+        recipe = Recette.objects.filter(item_ID=i.itemID_id)
+        for r in recipe:
+            counter.update({r.ing_ID:r.count})
+
+    items = []
+    for k in counter.keys():
+        items.append({'item': k,'count':counter[k]})
+    return items

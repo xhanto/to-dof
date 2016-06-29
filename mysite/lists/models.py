@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     list_count = models.IntegerField(default=0)
     server = models.IntegerField(choices=SERVER_CHOICES, default=0)
     mp = models.CharField(max_length=100,blank=True,null=True)
-
+        
     def __unicode__(self):
         return self.user.username
 

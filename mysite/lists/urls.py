@@ -16,5 +16,4 @@ urlpatterns = [
     url(r'^detail/(?P<list_id>[0-9]+)$', views.list_view, name='detail'),
     url(r'^visibility/(?P<list_id>[0-9]+)$', views.visibility, name='visibility'),
     url(r'^delete/(?P<list_id>[0-9]+)$', views.delete, name='delete'),
-    url(r'^edit_list/(?P<list_id>[0-9]+)$', views.edit_list, name='edit_list'),
 ]

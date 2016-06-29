@@ -1,56 +1,110 @@
 {% load lists_extra %}
+{% load bootstrap %}
+
 <div class="row">
   <div class="col-md-12">
-    <h2>{{myList.list_name}}</h2>
+    <h2>Liste "{{myList.list_name}}"</h2><p style="color:gray">
+      Créée par {{myList.user}} {% if myList.user|get_mp %} /w {{myList.user|get_mp}} {% endif %}
+    </p>
   </div>
 </div>
 <br>
 <div class="row">
   <div class="col-md-12">
 
-<div class="btn-group btn-group-justified">
+    <div class="btn-group btn-group-justified">
 
+      {% if user|verified:myList %}
 
-<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#total">Total des ingrédients</a>
+      <a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#total_auth">Total des ingrédients</a>
+      <a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#import">Importer</a>
+      <a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#edit">Éditer</a>
+      <a type="button" class="btn btn-success" data-toggle="collapse" data-target="#share">Partager</a>
 
-<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#import">Importer</a>
+      {% if myList.public %}
+      <a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-warning">Rendre privée</a>
+      {% else %}
+      <a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-success">Publier</a>
+      {% endif %}
 
+      <a href="{% url 'lists:delete' myList.id %}" type="button" class="btn btn-danger">Supprimer</a>
+      {% else %}
+      <a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#total_pub">Total des ingrédients</a>
+      <a type="button" class="btn btn-success" data-toggle="collapse" data-target="#share">Partager</a>
 
-<a type="button" class="btn btn-primary" data-toggle="collapse" data-target="#edit">Éditer</a>
-<a type="button" class="btn btn-success" data-toggle="collapse" data-target="#share">Partager</a>
-
-{% if myList.public %}
-<a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-warning">Rendre privée</a>
-{% else %}
-<a href="{% url 'lists:visibility' myList.id %}" type="button" class="btn btn-success">Publier</a>
-{% endif %}
-
-<a href="{% url 'lists:delete' myList.id %}" type="button" class="btn btn-danger">Supprimer</a>
-</div>
-</div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <br>
 
+<div id="total_pub" class="collapse row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-10">
+
+  <ul class="list-group">
+    <li class="list-group-item col-md-12" style="text-align:center;font-weight:bold">Liste des ingrédients</li>
+
+  {% for r in items|get_total %}
+    <li class="list-group-item col-md-6">
+  {{r.count}} {{r.item.name}}</li>
+  {% endfor %}
+  </ul>
+  </div>
+  <div class="col-sm-1"></div>
+</div>
+
+<div id="total_auth" class="collapse row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-10">
+
+  <ul class="list-group">
+    <li class="list-group-item col-md-12" style="text-align:center;font-weight:bold">Liste des ingrédients</li>
+  {% for r in items|get_total %}
+    <li class="list-group-item col-md-6">
+
+  <form role = "form" class="form-recipe">
+    <input type = "number" class = "input-mini" min="0" max ={{r.count}}>
+  </form>/
+  {{r.count}} {{r.item.name}}</li>
+  {% endfor %}
+  </ul>
+  </div>
+<div class="col-sm-1"></div>
+</div>
+
 <div id="import" class="collapse">
   <form role = "form" class="form-inline">
-  <label for="imp">URL à importer:</label><br>
-  <input type="text" class="form-control" id="imp">
+    <label for="imp">URL à importer:</label><br>
+    <input type="text" class="form-control" id="imp">
     <button type="submit" class="btn btn-default">Importer</button>
   </form>
 
 </div>
-<div id="total" class="collapse">
-  Total
-</div>
+
 <div id="edit" class="collapse">
-  Editer
+  <form role="form" class="form-horizontal" id="user_list" method="post" action="{{path}}" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {% if edit_form %}
+    {{ edit_form|bootstrap_horizontal }}
+      {% endif %}
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-2">
+        <input type="submit" class="btn btn-primary" name="submit" value="Sauvegarder" />
+      </div>
+    </div>
+  </form>
+
 </div>
+
 <div id="share" class="collapse">
 
   <input type="text" class="form-control" value="{{ path }}">
 
 </div>
+
 <br>
 {% for l in items|get_item %}
 
@@ -68,7 +122,7 @@
         </form>
         <a href="{% url 'lists:remove_item' myList.id l.ID %}" title="Supprimer cet objet">
           <span class="glyphicon glyphicon-minus-sign" style="color:#969696"></span></a>
-        {% endif %}
+          {% endif %}
         </div>
       </div>
     </li>
@@ -85,11 +139,18 @@
 
         <div class="col-md-5 mid">
           {% if l|get_recipe %}
+            {% if user|verified:myList %}
           {% for r in l|get_recipe %}
+
           <form role = "form" class="form-recipe">
-                <input type = "number" class = "input-mini" min="0" max ={{r.count}}>
-              </form>/ {{r.count}} {{r.ing_ID.name}}</br>
+            <input type = "number" class = "input-mini" min="0" max ={{r.count}}>
+          </form>/ {{r.count}} {{r.ing_ID.name}}</br>
           {% endfor %}
+          {% else%}
+          {% for r in l|get_recipe %}
+            {{r.count}} {{r.ing_ID.name}}</br>
+          {% endfor %}
+          {% endif %}
           {% else%}
           <p>Recette indisponible</p>
           {% endif %}
@@ -106,4 +167,4 @@
       </li>
 
     </ul>
-          {% endfor %}
+    {% endfor %}

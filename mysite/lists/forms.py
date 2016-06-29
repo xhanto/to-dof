@@ -36,3 +36,12 @@ class NewListForm(forms.ModelForm):
         help_texts = {
             'public': 'Une liste publique permet aux autres utilisateurs de voir votre liste.<br> Ils pourront aussi voir votre serveur et nom in-game si ceux-ci figurent sur votre profil.',
         }
+
+class EditListForm(forms.ModelForm):
+    class Meta:
+        model = List
+        fields = ('list_name','server')
+        labels = {
+            'list_name': 'Nom',
+            'server' : 'Serveur'
+        }

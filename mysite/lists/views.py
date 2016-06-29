@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
 from .models import User,List,UserProfile, ListItem, Objet
-from .forms import UserForm, UserProfileForm, NewListForm
+from .forms import UserForm, UserProfileForm, NewListForm,EditListForm
 from django.template import RequestContext
 
 # def index(request):
@@ -192,7 +192,21 @@ def add_item(request,list_id,item_id):
 
 def list_view(request,list_id):
     context = RequestContext(request)
-    return render(request,'lists/index.html',{'list_id': list_id},context)
+    edited = False
+    liste = List.objects.get(pk=list_id)
+    if request.method == 'POST':
+        edit_form = EditListForm(data=request.POST)
+        if edit_form.is_valid():
+            edit = edit_form.save(commit=False)
+            liste.server = edit.server
+            liste.list_name = edit.list_name
+            liste.save()
+            edited = True
+        else:
+            print edit_form.errors
+    else:
+        edit_form = EditListForm()
+    return render(request,'lists/index.html',{'list_id': list_id,'edit_form': edit_form, 'edited': edited},context)
 
 @login_required
 def remove_item(request,list_id,item_id):
@@ -227,17 +241,6 @@ def delete(request,list_id):
     liste = List.objects.get(pk=list_id)
     if liste.user == request.user:
         liste.delete()
-        return render(request,'lists/index.html',{'listRemoved':True},context)
-    else:
-        url =  request.META['HTTP_REFERER']
-        return redirect(url,{'listError': True})
-
-@login_required
-def edit_list(request,list_id):
-    context = RequestContext(request)
-    liste = List.objects.get(pk=list_id)
-    if liste.user == request.user:
-
         return render(request,'lists/index.html',{'listRemoved':True},context)
     else:
         url =  request.META['HTTP_REFERER']
