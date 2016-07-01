@@ -45,3 +45,11 @@ class EditListForm(forms.ModelForm):
             'list_name': 'Nom',
             'server' : 'Serveur'
         }
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+        labels = {
+            'email': 'Adresse email'
+        }

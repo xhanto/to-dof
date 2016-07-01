@@ -45,13 +45,13 @@
     {% endif %}
     {% if type %}
       {% itemlist type ran page user request %}
-    {% else %}
-    {% if list_id %}
+    {% elif list_id %}
       {% list_view user list_id edit_form %}
-      {% else %}
+    {% elif query %}
+      {% querylist query page user request %}
+    {% else %}
     <h3>Bienvenue sur la page d'accueil</h3>
     <p>Diverses options seront affichées ici.</p>
-    {% endif %}
     {% endif %}
   </div>
     <div class="col-md-1"></div>
@@ -110,7 +110,7 @@ window.onclick = function(event) {
   }
 }
 </script>
-
+  {% include "includes/footer.html" %}
 </body>
 
 </html>

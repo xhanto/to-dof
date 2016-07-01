@@ -3,9 +3,9 @@
 
 
 <h4>Equipements</h4>
-<form class="navbar-form navbar-left" role="search">
+<form class="navbar-form navbar-left" role="search" method="GET" action="{% url 'lists:search' %}">
     <div class="form-group" >
-        <input type="text" class="form-control" placeholder="Recherche">
+        <input type="text" class="form-control" placeholder="Recherche" name ="search">
     </div>
 </form>
 <ul class="list-group row">

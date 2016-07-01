@@ -1,0 +1,49 @@
+{% load staticfiles %}
+{% load lists_extra %}
+{% load bootstrap %}
+<html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}" />
+</head>
+<body>
+
+  {% include "includes/navbar.html" %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-3">
+        {% sidebar user %}
+            </div>
+      <div class="col-xs-12 col-md-7">
+        <h1>Mon profil</h1>
+        <br></br>
+        {% if registered %}
+        <strong>Modifications sauvegardées!</strong>
+        {% else %}
+        <strong>Serveur et pseudo in-game non-obligatoires, mais recommandé afin de voir les listes rendues publiques par d'autres utilisateurs d'un même serveur.</strong>
+        <hr></hr>
+        <form role="form" class="form-horizontal" id="user_form" method="post" action="/lists/profile/" enctype="multipart/form-data">
+
+          {% csrf_token %}
+
+          {{ edit_user_form|bootstrap_horizontal }}
+          {{ profile_form|bootstrap_horizontal }}
+          <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+              <input type="submit" class="btn btn-primary" name="submit" value="Enregistrer les modifications" />
+            </div>
+          </div>
+        </form>
+        {% endif %}
+      </div>
+      <div class="col-xs-6 col-md-2">
+        {% include "includes/search.html" %}
+      </div>
+    </div>
+  </div>
+  {% include "includes/footer.html" %}
+
+</body>
+
+</html>

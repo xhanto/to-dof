@@ -102,3 +102,9 @@ span.glyphicon-search {
     max-height: 200px;
     overflow-x: hidden;
 }
+
+#foot{
+  font-size:0.7em;
+  text-align:center;
+
+}

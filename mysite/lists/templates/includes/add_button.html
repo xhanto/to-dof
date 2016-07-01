@@ -9,11 +9,9 @@
       <li class="list-group-item"><a data-toggle="myModal" href="{% url 'lists:newlist' item.ID %}">Nouvelle liste</a></li>
 
         {% if myLists %}
-          <ul class="list-group">
             {% for list in myLists %}
-              <li class="list-group-item"><a id="add" href="{% url 'lists:add' list.id item.ID %}">{{ list.list_name }}</a></li>
+              <li class="list-group-item"><a href="{% url 'lists:add' list.id item.ID %}">{{ list.list_name }}</a></li>
             {% endfor %}
             {% endif %}
-    </ul>
   </div>
   {% endif %}

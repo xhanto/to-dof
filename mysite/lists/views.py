@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
 from .models import User,List,UserProfile, ListItem, Objet
-from .forms import UserForm, UserProfileForm, NewListForm,EditListForm
+from .forms import *
 from django.template import RequestContext
 
 # def index(request):
@@ -205,7 +205,7 @@ def list_view(request,list_id):
         else:
             print edit_form.errors
     else:
-        edit_form = EditListForm()
+        edit_form = EditListForm(initial={'list_name': liste.list_name, 'server': liste.server})
     return render(request,'lists/index.html',{'list_id': list_id,'edit_form': edit_form, 'edited': edited},context)
 
 @login_required
@@ -245,3 +245,39 @@ def delete(request,list_id):
     else:
         url =  request.META['HTTP_REFERER']
         return redirect(url,{'listError': True})
+
+@login_required
+def profile(request):
+
+    context = RequestContext(request)
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    modified = False
+
+    if request.method == 'POST':
+        edit_user_form = EditUserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        if edit_user_form.is_valid() and profile_form.is_valid():
+            edit_user = edit_user_form.save(commit=False)
+            edit_profile = profile_form.save(commit=False)
+            profile.server = edit_profile.server
+
+            profile.mp = edit_profile.mp
+            profile.save()
+            user.set_password(edit_user.password)
+            user.email = edit_user.email
+            edited = True
+        else:
+            print profile_form.errors, edit_user_form.errors
+    else:
+        profile_form = UserProfileForm(initial={'mp': profile.mp, 'server': profile.server})
+        edit_user_form = EditUserForm(initial={'email': user.email})
+    return render(request,
+            'lists/profile.html',
+            {'profile_form': profile_form,'edit_user_form': edit_user_form, 'modified': modified}, context)
+
+
+def search(request):
+    query = request.GET.get('search')
+
+    return render(request, 'lists/index.html', {'query': query})

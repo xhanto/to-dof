@@ -1,5 +1,6 @@
 {% load lists_extra %}
 <h2>{{ type|title }}</h2>
+{% if ran %}
 <ul class="nav nav-pills">
   {% if ran.0 == '1 and ran.1 == 50' %}
 
@@ -54,23 +55,36 @@
   <li ><a href="{% url 'lists:details' type|render '191' '200' %}">191-200</a></li>
 
   {% endif %}
+{% endif %}
 
 
 </ul>
 <div class="row">
+  <ul class="pagination nav navbar-right">
+    {% if search %}
+    {% if list.has_previous %}
+    <li><a href="?search={{search}}&page={{ list.previous_page_number }}">Précédente</a></li>
+    {% endif %}
+    {% for page in list.paginator.page_range %}
+    <li class="{% if list.number == page  %}active{% endif %}"><a href="?search={{search}}&page={{page}}">{{ page }}</a></li>
+    {% endfor %}
 
-    <ul class="pagination nav navbar-right">
-      {% if list.has_previous %}
-      <li><a href="?page={{ list.previous_page_number }}">Précédente</a></li>
-      {% endif %}
-      {% for page in list.paginator.page_range %}
-      <li class="{% if list.number == page  %}active{% endif %}"><a href="?page={{page}}">{{ page }}</a></li>
-      {% endfor %}
+    {% if list.has_next %}
+    <li> <a href="?search={{search}}&page={{ list.next_page_number }}">Suivante</a></li>
+    {% endif %}
+    {% else %}
+    {% if list.has_previous %}
+    <li><a href="?page={{ list.previous_page_number }}">Précédente</a></li>
+    {% endif %}
+    {% for page in list.paginator.page_range %}
+    <li class="{% if list.number == page  %}active{% endif %}"><a href="?page={{page}}">{{ page }}</a></li>
+    {% endfor %}
 
-      {% if list.has_next %}
-      <li> <a href="?page={{ list.next_page_number }}">Suivante</a></li>
-      {% endif %}
-    </ul>
+    {% if list.has_next %}
+    <li> <a href="?page={{ list.next_page_number }}">Suivante</a></li>
+    {% endif %}
+  {% endif %}
+  </ul>
 </div>
 <br>
 {% for l in list %}
@@ -163,7 +177,18 @@
     {% endfor %}
 <div class="row">
     <ul class="pagination nav navbar-right">
+      {% if search %}
+      {% if list.has_previous %}
+      <li><a href="?search={{search}}&page={{ list.previous_page_number }}">Précédente</a></li>
+      {% endif %}
+      {% for page in list.paginator.page_range %}
+      <li class="{% if list.number == page  %}active{% endif %}"><a href="?search={{search}}&page={{page}}">{{ page }}</a></li>
+      {% endfor %}
 
+      {% if list.has_next %}
+      <li> <a href="?search={{search}}&page={{ list.next_page_number }}">Suivante</a></li>
+      {% endif %}
+      {% else %}
       {% if list.has_previous %}
       <li><a href="?page={{ list.previous_page_number }}">Précédente</a></li>
       {% endif %}
@@ -174,5 +199,6 @@
       {% if list.has_next %}
       <li> <a href="?page={{ list.next_page_number }}">Suivante</a></li>
       {% endif %}
+    {% endif %}
     </ul>
 </div>

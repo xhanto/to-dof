@@ -28,7 +28,7 @@ def itemlist(context,type,ran,p,user,request):
     armes = ['Hache','Bâton','Arc','Épée','Dague','Baguette','Pelle','Marteau']
     equipements = ['Bouclier','Anneau','Amulette','Cape','Bottes','Chapeau','Ceinture','Trophée','Sac à dos']
     ressources = ['Idole']
-
+    consommables = ['Pain','Potion de familier','Potion','Potion de conquête','Préparation']
     items_list = Objet.objects.filter(type__exact=type).filter(level__range=(ran[0],ran[1])).order_by('level')
 
     paginator = Paginator(items_list,50)
@@ -167,3 +167,24 @@ def get_total(values):
     for k in counter.keys():
         items.append({'item': k,'count':counter[k]})
     return items
+
+@register.inclusion_tag('includes/item_list.html',takes_context=True)
+def querylist(context,query,p,user,request):
+    items_list = Objet.objects.filter(name__icontains=query).order_by('-level')
+
+    paginator = Paginator(items_list,50)
+    page = request.GET.get('page')
+
+    if "newlist" in str(context):
+        if context["newlist"]:
+            page = p
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+
+    return {'list': items,'type': 'Recherche','user': user,'search':query}
